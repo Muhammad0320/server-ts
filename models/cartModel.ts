@@ -4,11 +4,11 @@ import mongoose, { Types } from "mongoose";
 
 interface Cart {
   quantity: number;
-  total: number;
+  totalPrice: number;
 
-  user: Types.ObjectId;
-  product: Types.ObjectId;
-  createdt: Date;
+  user?: Types.ObjectId;
+  product?: Types.ObjectId;
+  createdAt: Date;
 }
 
 const cartSchema = new mongoose.Schema<Cart>({
