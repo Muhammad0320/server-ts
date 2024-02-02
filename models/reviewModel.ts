@@ -1,5 +1,5 @@
-import User from "./userModel";
 import mongoose, { Document, Model } from "mongoose";
+import { IUser } from "./userModel";
 
 interface IReviews extends Document {
   review: string;
@@ -45,7 +45,7 @@ const reviewSchema = new mongoose.Schema<IReviews>({
 });
 
 reviewSchema.pre(/^find/, function (this: IReviews & Model<IReviews>, next) {
-  this.populate<{ user: typeof User }>({ path: "user", select: "name photo" });
+  this.populate<{ user: IUser }>({ path: "user", select: "name photo" });
 
   next();
 });
