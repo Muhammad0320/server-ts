@@ -1,5 +1,6 @@
 import mongoose, { Types } from "mongoose";
 import { ProductTypes } from "../utils/ProductCategories";
+import { Document } from "mongoose";
 
 interface ProductIncludes {
   quantity: number;
@@ -18,7 +19,7 @@ interface ProductOthers {
   image: string;
 }
 
-interface IProduct {
+interface IProduct extends Document {
   name: string;
   image: string;
   category: ProductTypes;
