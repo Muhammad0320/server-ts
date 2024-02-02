@@ -32,7 +32,7 @@ class ApiFeatures<K extends Document> implements ApiFeaturesTypes<K> {
 
   sort() {
     if (this.queryString.sort) {
-      const sortBy = this.queryString.sort.replaceAll(",", " ");
+      const sortBy = this.queryString.sort.replace(/,/g, " ");
 
       this.query = this.query.sort(sortBy);
     } else {
@@ -44,7 +44,7 @@ class ApiFeatures<K extends Document> implements ApiFeaturesTypes<K> {
 
   limitFields() {
     if (this.queryString.fields) {
-      const fields = this.queryString.fields.replaceAll(",", " ");
+      const fields = this.queryString.fields.replace(/,/g, " ");
 
       this.query = this.query.select(fields);
     } else {
