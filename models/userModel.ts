@@ -8,23 +8,27 @@ export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
-  passwordComfirm: string;
+  passwordConfirm: string | undefined;
   photo?: string;
   role?: UserRole;
   active: boolean;
   passwordChangedAt: Date;
   passwordResetToken: string;
-  passwordResetExpires: string;
+  passwordResetExpires: number;
 }
 
 interface IMethods {
-  checkPasswordCorrect(password: string, hashedPassword: string): boolean;
+  checkPasswordCorrect(
+    password: string,
+    hashedPassword: string
+  ): Promise<Boolean>;
   passwordChagedAfter(JWTTimeStamp: number): boolean;
-
   generatePasswordResetToken(): string;
 }
 
-const userSchema = new mongoose.Schema({
+type UserModel = Model<IUser, {}, IMethods>;
+
+const userSchema = new mongoose.Schema<IUser, UserModel, IMethods>({
   name: {
     type: String,
     minlength: [2, "Name must be at least two characters "],
@@ -101,7 +105,7 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-userSchema.pre(/^find/, function (next) {
+userSchema.pre(/^find/, function (this: IUser & Model<IUser>, next) {
   this.find({ active: { $ne: false } });
 
   next();
@@ -116,7 +120,7 @@ userSchema.methods.checkPasswordCorrect = async function (
 
 userSchema.methods.passwordChagedAfter = function (JWTTimeStamp: number) {
   if (this.passwordChangedAt) {
-    const passwordChagedTimeStamp = Number.parseInt(
+    const passwordChagedTimeStamp: number = Number.parseInt(
       this.passwordChangedAt.getTime() / 1000,
       10
     );
@@ -140,6 +144,6 @@ userSchema.methods.generatePasswordResetToken = function () {
   return resetToken;
 };
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model<IUser, UserModel>("User", userSchema);
 
 module.exports = User;
