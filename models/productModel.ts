@@ -33,6 +33,11 @@ interface IProduct {
   features: string;
   gallery: Types.DocumentArray<ProductGallery>;
   slug: string;
+
+  others: Types.DocumentArray<ProductOthers>;
+
+  ratingsAverage: number;
+  ratingsQuantity: number;
 }
 
 const productSchema = new mongoose.Schema({
