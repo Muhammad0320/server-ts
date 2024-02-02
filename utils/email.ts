@@ -2,9 +2,17 @@ import pug from "pug";
 import nodemailer from "nodemailer";
 import { htmlToText } from "html-to-text";
 
+interface IUser {
+  name: string;
+  email: string;
+}
+
 class Email {
-  constructor(user, url) {
-    this.url = url;
+  to: string;
+  firstname: string;
+  from: string;
+
+  constructor(public url: string, user: IUser) {
     this.firstname = user.name.split(" ")[0];
     this.from = `Muhammad Awwal <${process.env.EMAIL_FROM}> `;
     this.to = user.email;
@@ -35,7 +43,7 @@ class Email {
     });
   }
 
-  async sendMail(template, subject) {
+  async sendMail(template: string, subject: string) {
     const html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
       firstname: this.firstname,
       url: this.url,
