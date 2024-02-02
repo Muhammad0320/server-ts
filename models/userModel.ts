@@ -121,7 +121,7 @@ userSchema.methods.checkPasswordCorrect = async function (
 userSchema.methods.passwordChagedAfter = function (JWTTimeStamp: number) {
   if (this.passwordChangedAt) {
     const passwordChagedTimeStamp: number = Number.parseInt(
-      this.passwordChangedAt.getTime() / 1000,
+      ` ${this.passwordChangedAt.getTime() / 1000}`,
       10
     );
 
