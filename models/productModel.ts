@@ -1,6 +1,6 @@
+import { Document } from "mongoose";
 import mongoose, { Types } from "mongoose";
 import { ProductTypes } from "../utils/ProductCategories";
-import { Document } from "mongoose";
 
 interface ProductIncludes {
   quantity: number;

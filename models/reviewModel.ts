@@ -1,6 +1,5 @@
-import mongoose, { Document, Model } from "mongoose";
-
 import User from "./userModel";
+import mongoose, { Document, Model } from "mongoose";
 
 interface IReviews extends Document {
   review: string;
