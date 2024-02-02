@@ -24,8 +24,8 @@ interface IProduct {
   category: ProductTypes;
   createdAt: Date;
   new: Boolean;
-  price: string;
-  discountPrice: string;
+  price: number;
+  discountPrice: number;
   description: string;
 
   includes: Types.DocumentArray<ProductIncludes>;
@@ -38,12 +38,14 @@ interface IProduct {
 
   ratingsAverage: number;
   ratingsQuantity: number;
+  discountPercent: number;
+  reviews: mongoose.Schema.Types.ObjectId;
 }
 
-const productSchema = new mongoose.Schema({
+const productSchema = new mongoose.Schema<IProduct>({
   name: {
     type: String,
-    minlength: [true, "Products name should have at least 4 chars"],
+    minlength: [4, "Products name should have at least 4 chars"],
     trim: true,
     required: [true, "A product must have a name"],
   },
@@ -175,6 +177,6 @@ productSchema.index({ category: 1, price: 1 });
 
 productSchema.index({ slug: 1 });
 
-const Product = mongoose.model("Product", productSchema);
+const Product = mongoose.model<IProduct>("Product", productSchema);
 
-module.exports = Product;
+export default Product;
