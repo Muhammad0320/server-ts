@@ -43,12 +43,15 @@ class Email {
     });
   }
 
-  async sendMail(template: string, subject: string) {
-    const html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
-      firstname: this.firstname,
-      url: this.url,
-      subject,
-    });
+  async sendMail(template: string, subject: string): Promise<void> {
+    const html: Element = pug.renderFile(
+      `${__dirname}/../views/email/${template}.pug`,
+      {
+        firstname: this.firstname,
+        url: this.url,
+        subject,
+      }
+    );
 
     const mailOptions = {
       from: this.from,
@@ -61,11 +64,11 @@ class Email {
     await this.createTransport().sendMail(mailOptions);
   }
 
-  async sendWelcome() {
+  async sendWelcome(): Promise<void> {
     await this.sendMail("welcome", "Hello, welcome to audiophile family 👋 ");
   }
 
-  async sendResetPassword() {
+  async sendResetPassword(): Promise<void> {
     await this.sendMail(
       "passwordReset",
       "Your password reset token valid for 10 mins ⏳"
