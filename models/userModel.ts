@@ -1,10 +1,10 @@
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
-import mongoose, { Document } from "mongoose";
+import mongoose, { Document, Model } from "mongoose";
 import validator from "validator";
 import { UserRole } from "../utils/UserRole";
 
-interface IUser extends Document {
+export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
@@ -15,6 +15,13 @@ interface IUser extends Document {
   passwordChangedAt: Date;
   passwordResetToken: string;
   passwordResetExpires: string;
+}
+
+interface IMethods {
+  checkPasswordCorrect(password: string, hashedPassword: string): boolean;
+  passwordChagedAfter(JWTTimeStamp: number): boolean;
+
+  generatePasswordResetToken(): string;
 }
 
 const userSchema = new mongoose.Schema({
@@ -107,7 +114,7 @@ userSchema.methods.checkPasswordCorrect = async function (
   return await bcrypt.compare(password, hashedPassword);
 };
 
-userSchema.methods.passwordChagedAfter = function (JWTTimeStamp) {
+userSchema.methods.passwordChagedAfter = function (JWTTimeStamp: number) {
   if (this.passwordChangedAt) {
     const passwordChagedTimeStamp = Number.parseInt(
       this.passwordChangedAt.getTime() / 1000,
