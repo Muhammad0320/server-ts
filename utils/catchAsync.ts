@@ -1,7 +1,9 @@
-const catchAsync = fn => {
-  return (req, res, next) => {
+import { RequestHandler, Request, Response, NextFunction } from "express";
+
+const catchAsync = (fn: RequestHandler): RequestHandler => {
+  return (req: Request, res: Response, next: NextFunction): RequestHandler => {
     fn(req, res, next).catch(next);
   };
 };
 
-module.exports = catchAsync;
+export default catchAsync;
