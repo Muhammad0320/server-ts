@@ -1,6 +1,7 @@
 // My biggest task yet
 
 import mongoose, { Document, Model, Types } from "mongoose";
+import { IProduct } from "./productModel";
 
 interface ICart extends Document {
   quantity: number;
@@ -41,7 +42,7 @@ const cartSchema = new mongoose.Schema<ICart>({
 });
 
 cartSchema.pre(/^find/, function (this: ICart & Model<ICart>, next) {
-  this.populate({
+  this.populate<{ product: IProduct }>({
     path: "product",
     select: "name price image description",
   });

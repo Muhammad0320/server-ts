@@ -19,7 +19,7 @@ interface ProductOthers {
   image: string;
 }
 
-interface IProduct extends Document {
+export interface IProduct extends Document {
   name: string;
   image: string;
   category: ProductTypes;
