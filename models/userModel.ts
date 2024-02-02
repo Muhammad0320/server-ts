@@ -1,10 +1,21 @@
-const mongoose = require("mongoose");
+import crypto from "crypto";
+import bcrypt from "bcryptjs";
+import mongoose, { Document } from "mongoose";
+import validator from "validator";
+import { UserRole } from "../utils/UserRole";
 
-const validator = require("validator");
-
-const crypto = require("crypto");
-
-const bcrypt = require("bcryptjs");
+interface IUser extends Document {
+  name: string;
+  email: string;
+  password: string;
+  passwordComfirm: string;
+  photo?: string;
+  role?: UserRole;
+  active: boolean;
+  passwordChangedAt: Date;
+  passwordResetToken: string;
+  passwordResetExpires: string;
+}
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -31,7 +42,7 @@ const userSchema = new mongoose.Schema({
   passwordConfirm: {
     type: String,
     validate: {
-      validator: function (val) {
+      validator: function (val: string) {
         return this.password === val;
       },
 
