@@ -13,11 +13,11 @@ interface IOrder extends Document {
   products: Types.DocumentArray<IProduct>;
 
   totalPrice: number;
-  user: mongoose.Schema.Types.ObjectId;
+  user?: mongoose.Schema.Types.ObjectId;
   paid: boolean;
 }
 
-const orderSchema = new mongoose.Schema({
+const orderSchema = new mongoose.Schema<IOrder>({
   createdAt: {
     type: Date,
     default: Date.now(),
@@ -60,6 +60,6 @@ const orderSchema = new mongoose.Schema({
   },
 });
 
-const Order = mongoose.model("Order", orderSchema);
+const Order = mongoose.model<IOrder>("Order", orderSchema);
 
 export default Order;
