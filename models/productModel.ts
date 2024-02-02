@@ -1,4 +1,39 @@
-const mongoose = require("mongoose");
+import mongoose, { Types } from "mongoose";
+import { ProductTypes } from "../utils/ProductCategories";
+
+interface ProductIncludes {
+  quantity: number;
+  item: string;
+}
+
+interface ProductGallery {
+  first: string;
+  second: string;
+  third: string;
+}
+
+interface ProductOthers {
+  slug: string;
+  name: string;
+  image: string;
+}
+
+interface IProduct {
+  name: string;
+  image: string;
+  category: ProductTypes;
+  createdAt: Date;
+  new: Boolean;
+  price: string;
+  discountPrice: string;
+  description: string;
+
+  includes: Types.DocumentArray<ProductIncludes>;
+
+  features: string;
+  gallery: Types.DocumentArray<ProductGallery>;
+  slug: string;
+}
 
 const productSchema = new mongoose.Schema({
   name: {
@@ -16,7 +51,11 @@ const productSchema = new mongoose.Schema({
   category: {
     type: String,
     required: [true, "A product must belong to a category"],
-    enum: ["earphones", "headphones", "speakers", "wired-earphones"],
+    enum: [
+      ProductTypes.earphone,
+      ProductTypes.headphones,
+      ProductTypes.speaker,
+    ],
   },
 
   createdAt: {
