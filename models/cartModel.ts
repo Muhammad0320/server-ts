@@ -1,8 +1,8 @@
 // My biggest task yet
 
-import mongoose, { Types } from "mongoose";
+import mongoose, { Document, Model, Types } from "mongoose";
 
-interface Cart {
+interface ICart extends Document {
   quantity: number;
   totalPrice: number;
 
@@ -11,7 +11,7 @@ interface Cart {
   createdAt: Date;
 }
 
-const cartSchema = new mongoose.Schema<Cart>({
+const cartSchema = new mongoose.Schema<ICart>({
   quantity: {
     type: Number,
     default: 1,
@@ -40,7 +40,7 @@ const cartSchema = new mongoose.Schema<Cart>({
   },
 });
 
-cartSchema.pre(/^find/, function (next) {
+cartSchema.pre(/^find/, function (this: ICart & Model<ICart>, next) {
   this.populate({
     path: "product",
     select: "name price image description",
@@ -49,6 +49,6 @@ cartSchema.pre(/^find/, function (next) {
   next();
 });
 
-const Cart = mongoose.model("Cart", cartSchema);
+const Cart = mongoose.model<ICart>("Cart", cartSchema);
 
-module.exports = Cart;
+export default Cart;
