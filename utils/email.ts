@@ -44,13 +44,14 @@ class Email {
   }
 
   async sendMail(template: string, subject: string): Promise<void> {
-    const html: Element = pug.renderFile(
+    const html = pug.renderFile(
       `${__dirname}/../views/email/${template}.pug`,
       {
         firstname: this.firstname,
         url: this.url,
         subject,
-      }
+      },
+      undefined
     );
 
     const mailOptions = {
